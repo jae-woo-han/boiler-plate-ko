@@ -3,6 +3,9 @@ const app = express();
 const port = 5000;
 
 const bodyParser = require('body-parser');//바디파서는 클라이언트 정보를 서버에서 분석해서 쓸 수 있게 하는 애
+
+const config = require('./config/key');
+
 const {User}  = require("./models/User");//만들어 놓은 데이터 모델
 
 app.use(bodyParser.urlencoded({extended: true}));//기본 form 데이터
@@ -10,7 +13,7 @@ app.use(bodyParser.urlencoded({extended: true}));//기본 form 데이터
 app.use(bodyParser.json());//json
 
 const mongoose = require('mongoose');
-mongoose.connect('mongodb+srv://jwhan:a123456@firstmongo.kt6gf.mongodb.net/firstMongo?retryWrites=true&w=majority', {
+mongoose.connect(config.mongoURI, {
     useNewUrlParser: true, useUnifiedTopology: true, useCreateIndex: true, useFindAndModify: false
 }).then(() => console.log('MongoDB Connected...'))
     .catch(err => console.log(err));
