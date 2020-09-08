@@ -26,6 +26,10 @@ app.get('/', (req, res) => {
   res.send('Hello World!')
 });
 
+app.get('/api/hello', (req,res)=>{
+  res.send("안녕하세요!@#");
+});
+
 //express routor 쓸 때 /api 형식으로 정리 할 예정이라 미리 경로 설정
 app.post('/api/users/register', (req, res) => {
   //회원 가입 할 때 필요한 정보들을 client에서 가져오면
@@ -46,14 +50,14 @@ app.post('/api/users/login', (req, res) => {
   User.findOne({email: req.body.email}, (err, user) =>{
     if(!user) {
       return res.json({
-        loginSucess : false,
+        loginSuccess : false,
         message : "요청한 이메일에 해당하는 유저가 없습니다."
       });
     }
       //이메일이 있으면 비밀번호가 일치 하는 지 확인하는 기능
     user.comparePassword(req.body.password , (err, isMatch) =>{
       if(!isMatch){
-        return res.json({loginSucess: false, message: "비밀번호가 틀렸습니다."});
+        return res.json({loginSuccess: false, message: "비밀번호가 틀렸습니다."});
       }
       //비밀번호가 일치한다면 token 생성하는 기능
       user.generateToken((err, user) =>{
@@ -62,7 +66,7 @@ app.post('/api/users/login', (req, res) => {
         //쿠키에 저장하기 위하여 라이브러리 필요; cookie-parser
         res.cookie("x_auth", user.token)
         .status(200)
-        .json({loginSucess: true, userId: user._id});
+        .json({loginSuccess: true, userId: user._id});
       });
     });
   });  
